@@ -1,0 +1,48 @@
+        Lancement du serveur :
+On commence par définir le fichier :
+    -> dans le terminal de VS Code :
+        npx tsc
+
+On doit maintenant paramétrer le port :
+    -> dans le terminal de VS Code :
+        set PING_LISTEN_PORT=8000
+
+Ensuite nous allons démarrer le serveur :
+    -> dans le terminal VS Code :
+        node build/index.js
+
+Ouvrir un navigateur et taper l'adresse suivante :
+        http://localhost:8000/ping
+
+Vous avez désormais les informations liées au serveur qui sont indiquée.
+
+Si vous avez une erreur 404 qui s'affiche, c'est que vous avez omis d'écrire "/ping" après le port.
+
+
+Pour l'utilisation de Docker, on doit installer et lancer Docker desktop, puis installer l'extension sur VSCode.
+
+Une fois fais, on ouvre un terminal sur VSCode, insère la commande suivante :
+        docker build -t test-node .
+
+Puis on tape celle-ci une fois le build réalisé :
+        docker run -it --rm -p 8080:8000 -e PING_LISTEN_PORT=8000 test-node
+Elle permet de lancer le serveur local qui écoute sur le port 8080, à partir du docker
+
+On va désormais curl sur un autre terminal afin de vérifier que la page web est bien fonctionnelle :
+        curl http://localhost:8080/ping -v
+
+
+
+Pour l'étape du double stages :
+
+On débute par cette commande sur un nouveau terminal :
+        docker build -t 2e-image -f Dockerfile .
+Elle va build l'image avec les stages.
+
+Nous allons répéter les étapes pour le single stage, en changeant les ports d'ecoute :
+        docker run -it --rm -p 8081:8000 -e PING_LISTEN_PORT=8000 test-node
+
+Le curl avec le port modifié :
+        curl http://localhost:8081/ping -v
+
+Vous voilà connecté au serveur.
